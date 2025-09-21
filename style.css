@@ -1,87 +1,153 @@
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      background: #0a0e2a; 
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: auto;
-      overflow: hidden;
-      font-family: "Comic Sans MS", cursive, sans-serif;
-      position: relative;
-    }
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background: #0a0e2a; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: auto;
+  overflow: hidden;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  position: relative;
+}
 
-    #starsCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
+#starsCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
 
-    .container {
-      text-align: center;
-      color: yellow;
-      position: relative;
-      z-index: 10;
-    }
+.container {
+  text-align: center;
+  color: yellow;
+  position: relative;
+  z-index: 10;
+  max-width: 90vw; /* Added for responsiveness: prevents overflow on small screens */
+  padding: 0 10px; /* Added padding for mobile edges */
+}
 
-    .titulo {
-      font-size: 2.5em;
-      margin: 0;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    }
-    .subtitulo {
-      font-size: 3em;
-      font-weight: bold;
-      margin: 10px 0;
-      animation: shine 3s infinite linear;
-    }
-    @keyframes shine {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 100% 50%; }
-    }
+.titulo {
+  font-size: clamp(1.5rem, 4vw, 2.5em); /* Responsive font: scales between 1.5rem and 2.5em */
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
 
+.subtitulo {
+  font-size: clamp(2rem, 5vw, 3em); /* Responsive: scales for better mobile fit */
+  font-weight: bold;
+  margin: 10px 0;
+  animation: shine 3s infinite linear;
+  line-height: 1.2; /* Added for better text wrapping */
+}
+
+@keyframes shine {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+.ramo img {
+  width: clamp(150px, 30vw, 250px); /* Responsive: scales image width */
+  margin-top: 20px;
+  max-width: 100%; /* Ensures it doesn't exceed container */
+  height: auto; /* Maintains aspect ratio */
+  animation: subirRamo 2s ease-out forwards;
+}
+
+@keyframes subirRamo {
+  0% {
+    transform: translateY(150px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.globos {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  font-size: clamp(1.5em, 4vw, 2em); /* Responsive font for balloons */
+  flex-wrap: wrap; /* Added: wraps to next line on very small screens */
+  gap: 5px; /* Added: flexible spacing instead of fixed margins */
+}
+
+.globos span {
+  background: yellow;
+  color: black;
+  padding: clamp(5px, 2vw, 10px) clamp(8px, 3vw, 15px); /* Responsive padding */
+  border-radius: 50%;
+  font-weight: bold;
+  box-shadow: 0 0 10px gold;
+  margin: 0; /* Reset margin, use gap instead */
+}
+
+#fireworks {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+/* Media Queries for Enhanced Responsiveness */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+    align-items: flex-start; /* Adjust alignment for shorter screens */
+    margin-top: 10vh; /* Push down slightly on mobile */
+  }
+  
+  .subtitulo {
+    font-size: clamp(1.5rem, 6vw, 2.5em); /* Further reduce on tablets */
+  }
+  
+  .globos {
+    justify-content: center;
+    flex-direction: row; /* Keep row but allow wrap */
+  }
+  
   .ramo img {
-    width: 250px;
-    margin-top: 20px;
-    animation: subirRamo 2s ease-out forwards;
+    width: clamp(120px, 40vw, 200px); /* Smaller on tablets */
   }
+}
 
-  @keyframes subirRamo {
-    0% {
-      transform: translateY(150px); /* Comienza desde abajo */
-      opacity: 0;                  /* invisible al inicio */
-    }
-    100% {
-      transform: translateY(0);    /* Llega a su lugar original */
-      opacity: 1;                  /* visible */
-    }
+@media (max-width: 480px) {
+  body {
+    align-items: flex-start; /* Start from top on small mobiles */
+    padding-top: 5vh;
   }
-
-    .globos {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-      font-size: 2em;
-    }
-    .globos span {
-      margin: 0 10px;
-      background: yellow;
-      color: black;
-      padding: 10px 15px;
-      border-radius: 50%;
-      font-weight: bold;
-      box-shadow: 0 0 10px gold;
-    }
-
-    #fireworks {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-    }
+  
+  .titulo {
+    font-size: clamp(1.2rem, 5vw, 2em);
+  }
+  
+  .subtitulo {
+    font-size: clamp(1.2rem, 6vw, 2em);
+    margin: 5px 0;
+  }
+  
+  .globos {
+    font-size: clamp(1.2em, 5vw, 1.5em);
+    flex-direction: column; /* Stack vertically on tiny screens */
+    align-items: center;
+  }
+  
+  .globos span {
+    margin: 2px 0; /* Vertical spacing when stacked */
+  }
+  
+  .ramo {
+    margin-top: 10px;
+  }
+  
+  .ramo img {
+    width: clamp(100px, 50vw, 150px); /* Even smaller on phones */
+  }
+}
