@@ -10,6 +10,8 @@ body {
   overflow: hidden;
   font-family: "Comic Sans MS", cursive, sans-serif;
   position: relative;
+  touch-action: manipulation; /* Added: Improves touch responsiveness on mobile */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling if needed on iOS */
 }
 
 #starsCanvas {
@@ -26,22 +28,25 @@ body {
   color: yellow;
   position: relative;
   z-index: 10;
-  max-width: 90vw; /* Added for responsiveness: prevents overflow on small screens */
-  padding: 0 10px; /* Added padding for mobile edges */
+  max-width: 90vw;
+  padding: 0 10px;
+  box-sizing: border-box; /* Added: Ensures padding doesn't cause overflow */
 }
 
 .titulo {
-  font-size: clamp(1.5rem, 4vw, 2.5em); /* Responsive font: scales between 1.5rem and 2.5em */
+  font-size: clamp(1.5rem, 4vw, 2.5em);
   margin: 0;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  word-break: break-word; /* Added: Prevents long words from overflowing on mobile */
 }
 
 .subtitulo {
-  font-size: clamp(2rem, 5vw, 3em); /* Responsive: scales for better mobile fit */
+  font-size: clamp(2rem, 5vw, 3em);
   font-weight: bold;
   margin: 10px 0;
   animation: shine 3s infinite linear;
-  line-height: 1.2; /* Added for better text wrapping */
+  line-height: 1.2;
+  word-break: break-word; /* Added for subtitle */
 }
 
 @keyframes shine {
@@ -50,10 +55,10 @@ body {
 }
 
 .ramo img {
-  width: clamp(150px, 30vw, 250px); /* Responsive: scales image width */
+  width: clamp(150px, 30vw, 250px);
   margin-top: 20px;
-  max-width: 100%; /* Ensures it doesn't exceed container */
-  height: auto; /* Maintains aspect ratio */
+  max-width: 100%;
+  height: auto;
   animation: subirRamo 2s ease-out forwards;
 }
 
@@ -72,19 +77,20 @@ body {
   display: flex;
   justify-content: center;
   margin-top: 20px;
-  font-size: clamp(1.5em, 4vw, 2em); /* Responsive font for balloons */
-  flex-wrap: wrap; /* Added: wraps to next line on very small screens */
-  gap: 5px; /* Added: flexible spacing instead of fixed margins */
+  font-size: clamp(1.5em, 4vw, 2em);
+  flex-wrap: wrap;
+  gap: 5px;
 }
 
 .globos span {
   background: yellow;
   color: black;
-  padding: clamp(5px, 2vw, 10px) clamp(8px, 3vw, 15px); /* Responsive padding */
+  padding: clamp(5px, 2vw, 10px) clamp(8px, 3vw, 15px);
   border-radius: 50%;
   font-weight: bold;
   box-shadow: 0 0 10px gold;
-  margin: 0; /* Reset margin, use gap instead */
+  margin: 0;
+  flex-shrink: 0; /* Added: Prevents squeezing on small screens */
 }
 
 #fireworks {
@@ -100,54 +106,96 @@ body {
 @media (max-width: 768px) {
   .container {
     padding: 0 20px;
-    align-items: flex-start; /* Adjust alignment for shorter screens */
-    margin-top: 10vh; /* Push down slightly on mobile */
+    align-items: flex-start;
+    margin-top: 10vh;
+    max-width: 95vw; /* Slightly wider on tablets */
   }
   
   .subtitulo {
-    font-size: clamp(1.5rem, 6vw, 2.5em); /* Further reduce on tablets */
+    font-size: clamp(1.5rem, 6vw, 2.5em);
   }
   
   .globos {
     justify-content: center;
-    flex-direction: row; /* Keep row but allow wrap */
+    flex-direction: row;
+    gap: 3px; /* Tighter gap on tablets */
   }
   
   .ramo img {
-    width: clamp(120px, 40vw, 200px); /* Smaller on tablets */
+    width: clamp(120px, 40vw, 200px);
   }
 }
 
 @media (max-width: 480px) {
   body {
-    align-items: flex-start; /* Start from top on small mobiles */
+    align-items: flex-start;
     padding-top: 5vh;
+    min-height: 100vh; /* Ensures full height on landscape */
+  }
+  
+  .container {
+    padding: 0 15px;
+    margin-top: 5vh;
+    width: 100%; /* Full width on small phones */
   }
   
   .titulo {
     font-size: clamp(1.2rem, 5vw, 2em);
+    margin-bottom: 5px;
   }
   
   .subtitulo {
     font-size: clamp(1.2rem, 6vw, 2em);
     margin: 5px 0;
+    line-height: 1.1; /* Tighter for small screens */
   }
   
   .globos {
     font-size: clamp(1.2em, 5vw, 1.5em);
-    flex-direction: column; /* Stack vertically on tiny screens */
+    flex-direction: column;
     align-items: center;
-  }
-  
-  .globos span {
-    margin: 2px 0; /* Vertical spacing when stacked */
-  }
-  
-  .ramo {
+    gap: 2px; /* Minimal vertical gap */
     margin-top: 10px;
   }
   
+  .globos span {
+    padding: clamp(4px, 1.5vw, 8px) clamp(6px, 2vw, 12px); /* Smaller padding */
+  }
+  
+  .ramo {
+    margin-top: 5px;
+  }
+  
   .ramo img {
-    width: clamp(100px, 50vw, 150px); /* Even smaller on phones */
+    width: clamp(100px, 50vw, 150px);
+    margin-top: 10px;
+  }
+}
+
+/* Landscape Mode Adjustment (Common on Mobiles) */
+@media (max-height: 500px) and (orientation: landscape) {
+  body {
+    align-items: center; /* Center in landscape */
+    padding-top: 0;
+  }
+  
+  .container {
+    margin-top: 0;
+    padding: 0 10px;
+  }
+  
+  .titulo, .subtitulo {
+    font-size: clamp(1rem, 3vw, 1.8em); /* Smaller in landscape to fit height */
+  }
+  
+  .globos {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px;
+  }
+  
+  .ramo img {
+    width: clamp(80px, 20vw, 120px); /* Compact in landscape */
   }
 }
