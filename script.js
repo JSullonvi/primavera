@@ -1,7 +1,7 @@
 document.body.style.cursor = "url('girasol.png') 16 16, auto";
 
-// Touch device optimization: Hide custom cursor on touch to avoid issues
-if ('ontouchstart' in window) {
+// Touch device optimization: Hide custom cursor on touch
+if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
   document.body.style.cursor = 'auto';
 }
 
@@ -11,9 +11,11 @@ const starsCtx = starsCanvas.getContext('2d');
 starsCanvas.width = window.innerWidth;
 starsCanvas.height = window.innerHeight;
 
-const stars = [];
-const starCount = 200;
+// Dynamic star count: Fewer on mobile for performance
+const isMobile = window.innerWidth <= 768;
+const starCount = isMobile ? 100 : 200;
 
+const stars = [];
 for (let i = 0; i < starCount; i++) {
   stars.push({
     x: Math.random() * starsCanvas.width,
@@ -49,14 +51,22 @@ function animateStars() {
 
 animateStars();
 
-window.addEventListener('resize', () => {
+const resizeHandler = () => {
   starsCanvas.width = window.innerWidth;
   starsCanvas.height = window.innerHeight;
-  // Regenerate stars on resize for better distribution
+  // Regenerate stars on resize
   stars.forEach(star => {
     star.x = Math.random() * starsCanvas.width;
   });
-});
+  // Update firework canvas too
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+};
+
+window.addEventListener('resize', resizeHandler);
+window.addEventListener('orientationchange', () => {
+  setTimeout(resizeHandler, 100); // Delay for orientation change
+}); // Added: Handles mobile rotation smoothly
 
 const canvas = document.getElementById("fireworks");
 const ctx = canvas.getContext("2d");
@@ -76,7 +86,9 @@ class Firework {
   }
 
   createParticles() {
-    for (let i = 0; i < 50; i++) {
+    // Fewer particles on mobile
+    const particleCount = isMobile ? 30 : 50;
+    for (let i = 0; i < particleCount; i++) {
       const angle = Math.random() * 2 * Math.PI;
       const speed = Math.random() * 4 + 2;
       this.particles.push({
@@ -131,11 +143,8 @@ function launchFirework() {
   fireworks.push(new Firework(x, y, colors));
 }
 
-setInterval(launchFirework, 800);
+// Dynamic interval: Slower on mobile
+const fireworkInterval = isMobile ? 1200 : 800;
+setInterval(launchFirework, fireworkInterval);
 
 animate();
-
-window.addEventListener("resize", () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
