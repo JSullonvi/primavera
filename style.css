@@ -59,8 +59,12 @@ body {
   margin-top: 20px;
   max-width: 100%;
   height: auto;
-  animation: subirRamo 2s ease-out forwards;
+  animation: 
+    subirRamo 2s ease-out forwards,  
+    latirRotar 3s ease-in-out infinite;   
+  animation-delay: 0s, 2s;  
 }
+
 
 @keyframes subirRamo {
   0% {
@@ -70,6 +74,21 @@ body {
   100% {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@keyframes latirRotar {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.05) rotate(-2deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(2deg);
+  }
+  75% {
+    transform: scale(1.05) rotate(-2deg);
   }
 }
 
